@@ -1,0 +1,16 @@
+{
+  "name": "backbone-hal",
+  "repo": "charlottegore/backbone-hal",
+  "description": "HAL Integration for Backbone",
+  "version": "0.0.1",
+  "keywords": [],
+  "dependencies": {
+    "solutionio/backbone": "*",
+    "component/underscore": "*"
+  },
+  "development": {},
+  "license": "MIT",
+  "scripts": [
+    "index.js"
+  ]
+}
