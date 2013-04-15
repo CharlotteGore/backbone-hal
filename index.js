@@ -5,7 +5,6 @@ var _ = require('underscore');
 var oldPrototype = Backbone.Model.prototype;
 
 var Model = function(attributes, options) {
-	console.log("Ah ha I have subverted you!");
     var defaults;
     attributes || (attributes = {});
     if( attributes.embed ){
@@ -43,14 +42,15 @@ _.extend(Model.prototype, oldPrototype, {
 			attributes = {};
 		}
 		this.links = attributes._links || {};
+    this.embedded = {};
 		attributes._embedded = attributes._embedded || {};
 
 		_.each(attributes._embedded, function(value, key){
 
-			if(this.embed[key]){
+			if(this.embed && this.embed[key]){
 				attributes[key] = new this.embed[key](value)			
 			}else{
-				this.embedded[key] = value;
+				this.embedded[key] = value ;
 			}
 
 		}, this);
