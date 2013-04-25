@@ -43,6 +43,7 @@ _.extend(Model.prototype, oldPrototype, {
 		}
 		this.links = attributes._links || {};
     this.embedded = {};
+    this.controls = {};
 		attributes._embedded = attributes._embedded || {};
 
 		_.each(attributes._embedded, function(value, key){
@@ -55,8 +56,15 @@ _.extend(Model.prototype, oldPrototype, {
 
 		}, this);
 
+    _.each(attributes._controls, function(value, key){
+
+      this.controls[key] = value;
+
+    })
+
 		delete attributes._links;
-		delete attributes._embedded;
+		delete attributes._controls;
+    delete attributes._embedded;
 		return attributes;
 
 	},
