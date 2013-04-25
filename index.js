@@ -60,7 +60,7 @@ _.extend(Model.prototype, oldPrototype, {
 
       this.controls[key] = value;
 
-    })
+    }, this);
 
 		delete attributes._links;
 		delete attributes._controls;
