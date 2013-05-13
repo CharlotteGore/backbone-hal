@@ -42,6 +42,13 @@ _.extend(Model.prototype, oldPrototype, {
 			attributes = {};
 		}
 		this.links = attributes._links || {};
+
+    _.each(this.links, function(link){
+      if(_.isArray(link) && link.length===1){
+        link = link[0];
+      }      
+    }, this)
+
     this.embedded = {};
     this.controls = {};
 		attributes._embedded = attributes._embedded || {};
@@ -69,22 +76,30 @@ _.extend(Model.prototype, oldPrototype, {
 
 	},
 
-    fetch: function(options) {
-      options = options ? _.clone(options) : {};
-      var model = this;
-      var success = options.success;
-      options.success = function(resp, status, xhr) {
-        if (!model.set(model.parse(model.halParse(resp), xhr), options)) return false;
-        if (success) success(model, resp, options);
-        model.trigger('sync', model, resp, options);
-      };
-      options.error = Backbone.wrapError(options.error, model, options);
-      return this.sync('read', this, options);
-    },
+  fetch: function(options) {
+    options = options ? _.clone(options) : {};
+    var model = this;
+    var success = options.success;
+    options.success = function(resp, status, xhr) {
+      if (!model.set(model.parse(model.halParse(resp), xhr), options)) return false;
+      if (success) success(model, resp, options);
+      model.trigger('sync', model, resp, options);
+    };
+    options.error = Backbone.wrapError(options.error, model, options);
+    return this.sync('read', this, options);
+  },
 
 	url : function(){
         var _ref, _ref1;
-        return ((_ref = this.links) != null ? (_ref1 = _ref.self) != null ? _ref1.href : void 0 : void 0) || Model.__super__.url.call(this);
+        if(this.links && this.links.self){
+            if(_.isArray(this.links.self)){
+              return (_.first(this.links.self)).href;
+            }else{
+              return this.links.self.href;
+            }
+        }else{
+          Model.__super__.url.call(this);
+        }
 	},
 
 	isNew : function(){
