@@ -43,9 +43,9 @@ _.extend(Model.prototype, oldPrototype, {
 		}
 		this.links = attributes._links || {};
 
-    _.each(this.links, function(link){
+    _.each(this.links, function(link, id){
       if(_.isArray(link) && link.length===1){
-        link = link[0];
+        this.links[id] = link[0];
       }      
     }, this)
 
