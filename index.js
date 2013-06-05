@@ -84,7 +84,8 @@ _.extend(Model.prototype, oldPrototype, {
       if (!model.set(model.parse(model.halParse(resp), xhr), options)){
          return false;
       }
-      if(var etag = xhr.getResponseHeader("Etag")){
+      var etag = xhr.getResponseHeader("ETag")
+      if(etag){
         model.set("Etag", etag);        
       }
       if (success){
