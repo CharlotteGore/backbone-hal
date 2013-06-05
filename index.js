@@ -8,15 +8,15 @@ var Model = function(attributes, options) {
     var defaults;
     attributes || (attributes = {});
     if( attributes.embed ){
-		this.embed = _.clone(attributes.embed);
-		delete attributes.embed;    	
+    this.embed = _.clone(attributes.embed);
+    delete attributes.embed;      
     }
     if (options && options.collection) this.collection = options.collection;
     if (options && options.parse){
-	 	attributes = this.parse(this.halParse(attributes));
-	} else {
-		attributes = this.halParse(attributes);
-	}
+    attributes = this.parse(this.halParse(attributes));
+  } else {
+    attributes = this.halParse(attributes);
+  }
     if (defaults = getValue(this, 'defaults')) {
       attributes = _.extend({}, defaults, attributes);
     }
@@ -37,11 +37,11 @@ var Model = function(attributes, options) {
 
 _.extend(Model.prototype, oldPrototype, {
 
-	halParse : function(attributes){
-		if(attributes == null){
-			attributes = {};
-		}
-		this.links = attributes._links || {};
+  halParse : function(attributes){
+    if(attributes == null){
+      attributes = {};
+    }
+    this.links = attributes._links || {};
 
     _.each(this.links, function(link, id){
       if(_.isArray(link) && link.length===1){
@@ -51,17 +51,17 @@ _.extend(Model.prototype, oldPrototype, {
 
     this.embedded = {};
     this.controls = {};
-		attributes._embedded = attributes._embedded || {};
+    attributes._embedded = attributes._embedded || {};
 
-		_.each(attributes._embedded, function(value, key){
+    _.each(attributes._embedded, function(value, key){
 
-			if(this.embed && this.embed[key]){
-				attributes[key] = new this.embed[key](value)			
-			}else{
-				this.embedded[key] = value ;
-			}
+      if(this.embed && this.embed[key]){
+        attributes[key] = new this.embed[key](value)      
+      }else{
+        this.embedded[key] = value ;
+      }
 
-		}, this);
+    }, this);
 
     _.each(attributes._controls, function(value, key){
 
@@ -69,27 +69,34 @@ _.extend(Model.prototype, oldPrototype, {
 
     }, this);
 
-		delete attributes._links;
-		delete attributes._controls;
+    delete attributes._links;
+    delete attributes._controls;
     delete attributes._embedded;
-		return attributes;
+    return attributes;
 
-	},
+  },
 
   fetch: function(options) {
     options = options ? _.clone(options) : {};
     var model = this;
     var success = options.success;
     options.success = function(resp, status, xhr) {
-      if (!model.set(model.parse(model.halParse(resp), xhr), options)) return false;
-      if (success) success(model, resp, options);
+      if (!model.set(model.parse(model.halParse(resp), xhr), options)){
+         return false;
+      }
+      if(var etag = xhr.getResponseHeader("Etag")){
+        model.set("Etag", etag);        
+      }
+      if (success){
+        success(model, resp, options);
+      }
       model.trigger('sync', model, resp, options);
     };
     options.error = Backbone.wrapError(options.error, model, options);
     return this.sync('read', this, options);
   },
 
-	url : function(){
+  url : function(){
         var _ref, _ref1;
         if(this.links && this.links.self){
             if(_.isArray(this.links.self)){
@@ -100,12 +107,12 @@ _.extend(Model.prototype, oldPrototype, {
         }else{
           Model.__super__.url.call(this);
         }
-	},
+  },
 
-	isNew : function(){
-		var _ref;
-        return !((_ref = this.links) != null ? _ref.self : void 0);	
-	}
+  isNew : function(){
+    var _ref;
+        return !((_ref = this.links) != null ? _ref.self : void 0); 
+  }
 
 });
 
