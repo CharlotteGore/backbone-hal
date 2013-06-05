@@ -85,8 +85,12 @@ _.extend(Model.prototype, oldPrototype, {
          return false;
       }
       var etag = xhr.getResponseHeader("ETag")
+      var lastModified = xhr.getResponseHeader("Last-Modified");
       if(etag){
         model.set("Etag", etag);        
+      }
+      if(lastModified){
+        model.set("Last-Modified", lastModified);
       }
       if (success){
         success(model, resp, options);
