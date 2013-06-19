@@ -65,7 +65,12 @@ _.extend(Model.prototype, oldPrototype, {
 
     _.each(attributes._controls, function(value, key){
 
-      this.controls[key] = value;
+      _.each(value, function(cntl){
+
+        var id = key + "/" + cntl.name;
+        this.controls[id] = cntl;
+
+      }, this)
 
     }, this);
 
