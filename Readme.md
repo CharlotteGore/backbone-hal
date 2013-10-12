@@ -1,3 +1,9 @@
+# DEPRECATED
+
+This component is no longer being maintained. It is rubbish. It has been replaced with the signicantly better - in terms of features and having test coverage - by (Hyperbone Model)[https://github.com/green-mesa/hyperbone-model]
+
+Thanks!
+
 # backbone-hal
 
   HAL Integration for Backbone.
