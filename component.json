@@ -5,8 +5,8 @@
   "version": "0.0.1",
   "keywords": [],
   "dependencies": {
-    "solutionio/backbone": "*",
-    "component/underscore": "*"
+    "components/backbone": "*",
+    "components/underscore": "*"
   },
   "development": {},
   "license": "MIT",
