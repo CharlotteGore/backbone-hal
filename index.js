@@ -1,4 +1,4 @@
-var Backbone = require('backbone.js');
+var Backbone = require('backbone');
 var _ = require('underscore');
 
 
