@@ -65,12 +65,20 @@ _.extend(Model.prototype, oldPrototype, {
 
     _.each(attributes._controls, function(value, key){
 
-      _.each(value, function(cntl){
+      if (value.length === 1){
 
-        var id = key + "/" + cntl.name;
-        this.controls[id] = cntl;
+        this.controls[key] = value[0];
 
-      }, this)
+      } else {
+
+        _.each(value, function(cntl){
+
+          var id = key + "/" + cntl.name;
+          this.controls[id] = cntl;
+
+        }, this);
+
+      }
 
     }, this);
 
